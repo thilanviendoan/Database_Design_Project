@@ -1,0 +1,104 @@
+
+USE aSFashion_49;
+
+# Query 1
+
+SELECT CONCAT(Staff_FName, ' ', Staff_LName) AS 'Full Name',
+       CONCAT('$', FORMAT(Apt_Hourly_Rate, 2)) AS 'Hourly Salary'
+FROM STAFF AS S,
+     APPOINTMENT AS A 
+WHERE S.Staff_Apt_Level = A.Apt_Lvl_ID
+ORDER BY Apt_Hourly_Rate DESC;
+
+
+# Query 2
+
+SELECT CONCAT(C.Cust_FName, ' ', C.Cust_LName) AS 'Full Name',
+       CO.CustOrd_Date AS `Order Date`
+FROM CUSTOMERORDER CO,
+     CUSTOMER C 
+WHERE CO.Cust_Number = C.Cust_Number
+ORDER BY CO.CustOrd_Date ASC
+LIMIT 1 OFFSET 1;
+
+
+# Query 3
+
+SELECT
+    S.Str_Name AS 'Store Name',
+    CONCAT(ST.Staff_FName, ' ', ST.Staff_LName) AS 'Manager Name',
+    A.Apt_Lvl_Desc AS `Appointment Level`,
+    CONCAT('$', FORMAT(A.Apt_Hourly_Rate, 2)) AS 'Hourly Rate'
+FROM STORE S,
+     STAFF ST, 
+     APPOINTMENT A 
+WHERE S.StoreManagerID = ST.Staff_ID
+AND ST.Staff_Apt_Level = A.Apt_Lvl_ID
+ORDER BY A.Apt_Hourly_Rate DESC;
+
+
+# Query 4
+
+SELECT
+    P.Prod_Num AS 'Product Number',
+    P.Prod_Desc AS 'Product Description',
+    PT.Prod_Type_Desc AS 'Product Type',
+    P.Prod_Size AS 'Product Size',
+    SUM(OL.OrdLn_Qnty) AS 'Total Quantity Sold'
+FROM PRODUCT P,
+     PRODUCTTYPE PT, 
+     ORDERLINE OL 
+WHERE P.Prod_TypeID = PT.Prod_TypeID
+AND P.Prod_Num = OL.Prod_Num
+AND OL.OrdLn_DatePicked IS NOT NULL
+GROUP BY P.Prod_Num
+HAVING SUM(OL.OrdLn_Qnty) > 0
+
+
+# Query 5
+
+SELECT
+    P.Prod_Num AS 'Product Number',
+    P.Prod_Desc AS 'Product Description',
+    PT.Prod_Type_Desc AS 'Product Type',
+    SUM(OL.OrdLn_Qnty) AS 'Total Quantity Sold'
+FROM PRODUCT P,
+     PRODUCTTYPE PT,
+     ORDERLINE OL,
+     CUSTOMERORDER CO 
+WHERE P.Prod_TypeID = PT.Prod_TypeID
+AND P.Prod_Num = OL.Prod_Num
+AND OL.CustOrd_ID = CO.CustOrd_ID
+AND OL.OrdLn_DatePicked <= '2024-05-20'
+GROUP BY P.Prod_Num
+HAVING SUM(OL.OrdLn_Qnty) > 0
+ORDER BY P.Prod_Num ASC, SUM(OL.OrdLn_Qnty) DESC;
+
+# Query 6
+
+SELECT
+    ST.Staff_ID AS 'Staff ID',
+    CONCAT(ST.Staff_FName, ' ', ST.Staff_LName) AS 'Staff Name',
+    COUNT(ST2.Staff_ID) AS 'Number of Staff Supervised'
+FROM STAFF ST,
+     STORE S, 
+     STAFF ST2  
+WHERE S.StoreManagerID = ST.Staff_ID
+AND ST.Staff_ID = ST2.SupvisorID
+GROUP BY ST.Staff_ID
+
+
+# Query 7
+
+SELECT
+    P.Prod_Num AS 'Product Number',
+    P.Prod_Desc AS 'Description',
+    (SUM(I.Inv_QtyOrdered) - SUM(I.Inv_QtyOnHand)) AS 'Total Shortage'
+FROM PRODUCT P,
+     INVENTORY I 
+WHERE P.Prod_Num = I.Prod_Num
+GROUP BY P.Prod_Num
+HAVING SUM(I.Inv_QtyOrdered) > SUM(I.Inv_QtyOnHand)
+ORDER BY 'Total Shortage' DESC;
+
+
