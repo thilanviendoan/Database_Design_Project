@@ -1,0 +1,181 @@
+USE aSFashion_49;
+-- Inserting into CUSTOMER table
+INSERT INTO CUSTOMER (Cust_FName, Cust_LName, Cust_Phone, Cust_Email) 
+VALUES 
+('Mohammad', 'Awrangjeb', '0737355032', 'm.awrangjeb@gmail.com'),
+('John', 'Sung', '0737123456', 'john.smith@example.com'),
+('Jane', 'Johnson', '0737432109', 'emma.johnson@example.com'),
+('Susan', 'Christina', '0737578901', 'sophia.brown@example.com'),
+('Matt', 'Will', '0737222222', 'david.wilson@example.com'),
+('Alice', 'Baker', '0737554321', 'alice.baker@example.com'),
+('Bob', 'Carter', '0737665432', 'bob.carter@example.com'),
+('Charlie', 'Davis', '0737776543', 'charlie.davis@example.com'),
+('David', 'Evans', '0737887654', 'david.evans@example.com'),
+('Eve', 'Fisher', '0737998765', 'eve.fisher@example.com');
+
+
+
+-- Inserting into APPOINTMENT table
+INSERT INTO APPOINTMENT (Apt_Lvl_ID, Apt_Lvl_Desc, Apt_Hourly_Rate) 
+VALUES 
+('SM1', 'Senior Manager Level 1', 130.75),
+('M1', 'Manager Level 1', 120.75),
+('M2', 'Manager Level 2', 110.50),
+('S1', 'Supervisor Level 1', 60.25),
+('S2', 'Supervisor Level 2', 55.12),
+('T1', 'Team Member Level 1', 25.40);
+
+
+-- Inserting into STORE table with Str_Num
+INSERT INTO STORE (Str_Name, Str_Phone, Str_Email, StoreManagerID) 
+VALUES 
+('a*Fashion Brisbane', '0737355032', 'brisbane@asfasion.com.au', NULL),
+('a*Fashion Sydney', '0287654321', 'sydney@asfasion.com.au', NULL),
+('a*Fashion Melbourne', '0387654321', 'melbourne@asfasion.com.au', NULL),
+('a*Fashion Perth', '0898765432', 'perth@asfasion.com.au', NULL),
+('a*Fashion Adelaide', '0876543210', 'adelaide@asfasion.com.au', NULL);
+
+-- Inserting into STAFF table
+INSERT INTO STAFF (Staff_FName, Staff_LName, Staff_Phone, Staff_DoB, Staff_StartDate, Staff_Apt_Level, Store_ID, SupvisorID) 
+VALUES 
+('Alice', 'Johnson', '0737111111', '1990-05-15', '2020-01-15','SM1',1,NULL),
+('Bob', 'Smith', '0737222222', '1995-08-20', '2020-03-10', 'M1',2,NULL),
+('Emma', 'Brown', '0737333333', '1992-11-25', '2020-02-20','M1',3, NULL),
+('Daniel', 'Wilson', '0737444444', '1988-04-10', '2020-05-05','M1',4, NULL),
+('Sophia', 'Davis', '0737555555', '1993-09-30', '2020-06-15', 'M1',5, NULL),
+('Michael', 'Anderson', '0737666666', '1991-07-20', '2021-04-25','S1',1, NULL),
+('Olivia', 'Martinez', '0737777777', '1989-12-10', '2019-03-15', 'S2',1, NULL),
+('James', 'Garcia', '0737888888', '1994-06-05', '2020-07-10','T1', 1, NULL),
+('Isabella', 'Rodriguez', '0737999999', '1990-03-18', '2022-08-20','M2',1, NULL),
+('William', 'Hernandez', '0737000000', '1996-02-14', '2023-09-05','M2', 2, NULL),
+('Charlotte', 'Lopez', '0737110101', '1992-01-22', '2020-10-12','S1',2, NULL),
+('Henry', 'White', '0737220202', '1991-11-11', '2020-11-01', 'S2',2, NULL);
+
+-- Update the STORE table to set StoreManagerID based on the inserted staff records
+UPDATE STORE SET StoreManagerID = 1 WHERE Str_Num = 1; -- Alice manages Brisbane store
+UPDATE STORE SET StoreManagerID = 2 WHERE Str_Num = 2; -- Bob manages Sydney store
+UPDATE STORE SET StoreManagerID = 3 WHERE Str_Num = 3; -- Emma manages Melbourne store
+UPDATE STORE SET StoreManagerID = 4 WHERE Str_Num = 4; -- Daniel manages Perth store
+UPDATE STORE SET StoreManagerID = 5 WHERE Str_Num = 5; -- Sophia manages Adelaide store
+
+
+-- Update SupvisorID in the STAFF table
+
+-- Set Alice Johnson (Staff_ID = 1) as the supervisor for Bob, Emma, Daniel, and Sophia. 
+
+-- Alice is her own supervisor since she is the highest-ranking manager.
+UPDATE STAFF SET SupvisorID = 1 WHERE Staff_ID IN (1, 2, 3, 4, 5);
+
+
+UPDATE STAFF SET SupvisorID = 1 WHERE Staff_ID IN (1, 2, 3, 4, 5);
+
+
+UPDATE STAFF SET SupvisorID = 1 WHERE Staff_ID IN (1, 2, 3, 4, 5);
+
+-- ISABELLA IS the supervisor for Michael
+UPDATE STAFF SET SupvisorID = 9 WHERE Staff_ID = 6;
+
+ 
+
+-- Michael is the supervisor for Olivia
+UPDATE STAFF SET SupvisorID = 6 WHERE Staff_ID = 7;
+
+-- Olivia is the supervisor for James
+UPDATE STAFF SET SupvisorID = 7 WHERE Staff_ID = 8;
+
+-- Alice is the supervisor for Isabella
+UPDATE STAFF SET SupvisorID = 1 WHERE Staff_ID = 9;
+
+-- Bob is the supervisor for William
+UPDATE STAFF SET SupvisorID = 2 WHERE Staff_ID = 10;
+
+-- William is the supervisor for Charlotte
+UPDATE STAFF SET SupvisorID = 10 WHERE Staff_ID = 11;
+
+-- Henry is his own supervisor
+UPDATE STAFF SET SupvisorID = 12 WHERE Staff_ID = 12;
+
+ 
+
+-- Inserting into PRODUCTTYPE table
+INSERT INTO PRODUCTTYPE (Prod_Type_Desc) 
+VALUES 
+('Shirt'),
+('Pants'),
+('Skirt'),
+('Dress'),
+('Jeans');
+
+-- Inserting into PRODUCT table
+INSERT INTO PRODUCT (Prod_Desc, Prod_Size, Prod_Price, Price_Discount, Prod_TypeID) 
+VALUES 
+('Men\'s Shirt', 'Large', 50.00, 5.00, 1),
+('Women\'s Pant', 'Medium', 70.00, 7.50, 2),
+('Girl\'s Skirt', 'Small', 40.00, 4.50, 3),
+('Women\'s Dress', 'Medium', 90.00, 10.00, 4),
+('Men\'s Jeans', 'XL', 60.00, 6.50,5),
+('Men\'s Shirt', 'Medium', 30.00, 3.00, 1),
+('Women\'s Pant', 'Large', 80.00, 8.00, 2),
+('Girl\'s Skirt', 'Medium', 45.00, 4.50, 3),
+('Women\'s Dress', 'Large', 120.00, 12.00, 4),
+('Men\'s Jeans', 'L', 50.00, 5.00, 5);
+
+
+
+-- Inserting into INVENTORY table
+INSERT INTO INVENTORY (Prod_Num, Str_Num, Inv_QtyOnHand, Inv_QtyOrdered) 
+VALUES 
+(1, 1, 50, 10),
+(1, 2, 10, 95),
+(4, 1, 20, 56),
+(2, 2, 30, 5),
+(3, 3, 40, 8),
+(4, 4, 20, 40),
+(5, 5, 35, 7);
+
+-- Inserting into ORDERMODE table
+INSERT INTO ORDERMODE (Order_ModelID, Order_Mode_Desc) 
+VALUES 
+('O', 'Online'),
+('I', 'In store');
+
+-- Inserting into CUSTOMERORDER table
+INSERT INTO CUSTOMERORDER (CustOrd_Date, CustOrd_Mode, Cust_Number, Str_Num) 
+VALUES 
+('2024-05-20', 'O', 1, 1),
+('2024-05-21', 'I', 2, 2),
+('2024-05-22', 'O', 3, 3),
+('2024-05-23', 'I', 4, 4),
+('2024-05-24', 'O', 5, 5),
+('2024-05-22', 'I', 6, 1),
+('2024-05-20', 'O', 7, 2),
+('2024-05-20', 'I', 8, 3),
+('2024-05-19', 'O', 9, 4),
+('2024-05-17', 'I', 10, 5),
+('2024-05-18', 'O', 5, 5),
+('2024-05-20', 'I', 6, 1),
+('2024-05-23', 'O', 6, 2),
+('2024-05-22', 'I', 7, 3),
+('2024-05-23', 'O', 7, 4);
+
+-- Inserting into ORDERLINE table
+INSERT INTO ORDERLINE (CustOrd_ID, Prod_Num, OrdLn_DateArrived, OrdLn_DatePicked, OrdLn_Qnty) 
+VALUES 
+(1, 1, '2024-05-22', '2024-05-23', 2),
+(2, 2, '2024-05-22', '2024-05-23', 3),
+(3, 3, '2024-05-23', '2024-05-24', 1),
+(4, 4, '2024-05-24', '2024-05-25', 4),
+(5, 5, '2024-05-25', '2024-05-26', 2),
+(6, 10, '2024-05-23', '2024-05-24', 1),
+(7, 9, '2024-05-21', '2024-05-22', 6),
+(8, 6, '2024-05-21', '2024-05-22', 2),
+(9, 7, '2024-05-20', '2024-05-21', 3),
+(10, 8, '2024-05-18', '2024-05-19', 5),
+(11, 5, '2024-05-19', '2024-05-20', 3),
+(12, 10, '2024-05-21', '2024-05-22', 1),
+(13, 9, '2024-05-24', '2024-05-25', 7),
+(14, 6, '2024-05-23', '2024-05-24', 8),
+(15, 7, '2024-05-24', '2024-05-25', 10);
+
+
+
